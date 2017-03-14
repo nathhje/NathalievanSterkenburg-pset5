@@ -1,5 +1,6 @@
 package com.example.gebruiker.nathalievansterkenburg_pset5;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -159,4 +160,16 @@ public class ListActivity extends AppCompatActivity {
 
     public void OnItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        Log.i("slaan we ook iets op", "in de savedinstance");
+//        savedInstanceState.putInt("CurrentParent", parent);
+//    }
 }

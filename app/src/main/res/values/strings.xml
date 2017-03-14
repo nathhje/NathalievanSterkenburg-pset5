@@ -3,4 +3,9 @@
     <string name="remove">Remove</string>
     <string name="add">Add</string>
     <string name="newtodo">add something you need to do</string>
+    <string name="newlist">add a list of things you need to do</string>
+    <string name="listinstruction">See the items in a list by clicking on the list.
+    Remove an entire list by holding the list and selecting remove.</string>
+    <string name="iteminstruction">Set a task as done by clicking it.
+    Remove a task by holding it.</string>
 </resources>

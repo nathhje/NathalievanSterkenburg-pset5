@@ -27,13 +27,23 @@ public class MainActivity extends AppCompatActivity {
     TodoListAdapter todoAdapter;
     int toDeleteID = 0;
     TodoList toDelete = new TodoList(null, 0);
+    Button removeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        newtodo = (EditText) findViewById(R.id.newtodo);
+        removeButton = (Button) findViewById(R.id.remove);
+        removeButton.setVisibility(View.GONE);
+//
+//        if(savedInstanceState != null) {
+//            Intent intent = new Intent(this, ListActivity.class);
+//            intent.putExtra("parent", savedInstanceState.getInt("Currentparent"));
+//            Log.i("komen we", "ook in de saved instance");
+//            startActivity(intent);
+//        }
+
 
         // initialize DB
         dbManager = new DBManager(this);
@@ -74,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AddToList(View view) {
-
+        removeButton = (Button) findViewById(R.id.remove);
+        removeButton.setVisibility(View.GONE);
+        newtodo = (EditText) findViewById(R.id.newtodo);
         Log.i("ik weet niet", "waar ik moet zoeken");
         final String entry = newtodo.getText().toString();
         dbManager.insert(entry, DatabaseHelper.TABLE_NAMELIST, 0);
@@ -105,9 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 toDelete = ListofLists.get(position);
                 Log.i("of", "hier");
                 toDeleteID = toDelete.getId();
-                Log.i("hier", "of");
-                Button removeButton = (Button) findViewById(R.id.remove);
-                Log.i("eventueel", "hier");
+                removeButton = (Button) findViewById(R.id.remove);
                 removeButton.setVisibility(View.VISIBLE);
                 Log.i("hier", "eventueel");
                 fetchCursor();
@@ -142,9 +152,14 @@ public class MainActivity extends AppCompatActivity {
 
         ListofLists.remove(toDelete);
 
-        Button removeButton = (Button) findViewById(R.id.remove);
+        removeButton = (Button) findViewById(R.id.remove);
         removeButton.setVisibility(View.GONE);
 
         todoAdapter.notifyDataSetChanged();
+    }
+
+    public void removeRemove(View view) {
+        removeButton = (Button) findViewById(R.id.remove);
+        removeButton.setVisibility(View.GONE);
     }
 }
