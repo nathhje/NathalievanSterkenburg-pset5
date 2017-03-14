@@ -32,17 +32,21 @@ public class DBManager {
         database.close();}
 
     // insert item into database
-    public void insert(String name, String tableName, String parent) {
+    public void insert(String name, String tableName, int parent) {
 
         ContentValues contentValue = new ContentValues();
         contentValue.put(DatabaseHelper.SUBJECT, name);
 
         if(tableName.equals(DatabaseHelper.TABLE_NAMEITEM)) {
+            Log.i("kom ik hier", "wel");
             contentValue.put(DatabaseHelper.DONE, DatabaseHelper.CROSS);
             contentValue.put(DatabaseHelper.PARENT, parent);
         }
 
         database.insert(tableName, null, contentValue);
+        String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_NAMEITEM + ";";
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        Log.i("nog een cursor", Integer.toString(cursor.getCount()));
         fetchItem(null);
     }
 
@@ -52,6 +56,10 @@ public class DBManager {
         String[] columns = new String[] {DatabaseHelper._ID, DatabaseHelper.SUBJECT,
                 DatabaseHelper.DONE, DatabaseHelper.PARENT};
         Cursor cursor = database.query(DatabaseHelper.TABLE_NAMEITEM, columns, condition, null, null, null, null);
+
+//        String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_NAMEITEM + " WHERE "
+//                + condition + ";";
+//        Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -61,12 +69,16 @@ public class DBManager {
 
     public Cursor fetchList(String condition) {
 
+        Log.i("hier moet ik", "wel komen");
         String[] columns = new String[] {DatabaseHelper._ID, DatabaseHelper.SUBJECT};
-        Cursor cursor = database.query(DatabaseHelper.TABLE_NAMEITEM, columns, condition, null, null, null, null);
+        Cursor cursor = database.query(DatabaseHelper.TABLE_NAMELIST, columns, condition, null, null, null, null);
+        Log.i("ik zie geen reden", "waarom dit niet goed is");
         if (cursor != null) {
+            Log.i("ik ben wel benieuwd", "hoe het met deze statement zit");
             cursor.moveToFirst();
         }
         Log.d("cursor", Integer.toString(cursor.getCount()));
+        Log.i("als ik hier komt", "is het raar");
         return cursor;
     }
 
@@ -81,7 +93,8 @@ public class DBManager {
     }
 
     // deletes item from database
-    public void delete(long _id) {
-        database.delete(DatabaseHelper.TABLE_NAMEITEM, DatabaseHelper._ID + " = " + _id, null);
+    public void delete(int _id, String table_name, String selection) {
+        Log.i("wat the ", "actual fuck");
+        database.delete(table_name, selection + " = " + _id, null);
     }
 }

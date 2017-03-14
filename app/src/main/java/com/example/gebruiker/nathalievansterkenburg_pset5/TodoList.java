@@ -9,9 +9,11 @@ import java.util.ArrayList;
 public class TodoList {
     private String listName;
     private ArrayList<TodoItem> theList;
+    private int id;
 
-    public TodoList(String name) {
+    public TodoList(String name, int ID) {
         listName = name;
+        id = ID;
     }
 
     public void add(TodoItem newItem) {
@@ -22,7 +24,11 @@ public class TodoList {
 
     public ArrayList<TodoItem> getTheList() { return theList; }
 
+    public int getId() { return id; }
+
     public void setListName(String newName) { listName = newName; }
 
     public void setTheList(ArrayList<TodoItem> newList) { theList = newList; }
+
+    public void setId(int newId) { id = newId; }
 }

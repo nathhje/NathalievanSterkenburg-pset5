@@ -12,7 +12,7 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="400dp"
         android:layout_alignParentTop="true"
         android:listSelector="@color/colorAccent"
         android:id="@+id/todolist"
@@ -25,6 +25,7 @@
         android:layout_marginBottom="50dp"
         android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
+        android:layout_marginTop="20dp"
         android:text="@string/remove"
         android:onClick="RemoveFromList"
         android:visibility="gone"

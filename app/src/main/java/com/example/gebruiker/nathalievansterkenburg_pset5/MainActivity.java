@@ -5,8 +5,10 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private Drawable background;;
     ArrayList<TodoList> ListofLists = new ArrayList<>();
     TodoListAdapter todoAdapter;
+    int toDeleteID = 0;
+    TodoList toDelete = new TodoList(null, 0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,18 @@ public class MainActivity extends AppCompatActivity {
 
         // get data from DB
         Cursor cursor = dbManager.fetchList(null);
+
+        if(cursor.getCount() > 0) {
+            TodoList theItem = new TodoList(
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.SUBJECT)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper._ID)));
+            ListofLists.add(theItem);
+        }
+
         while (cursor.moveToNext()) {
-            TodoList theItem = new TodoList(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.SUBJECT)));
+            TodoList theItem = new TodoList(
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.SUBJECT)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper._ID)));
 
             ListofLists.add(theItem);
         }
@@ -60,12 +74,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void AddToList(View view) {
+
+        Log.i("ik weet niet", "waar ik moet zoeken");
         final String entry = newtodo.getText().toString();
-        dbManager.insert(entry, DatabaseHelper.TABLE_NAMELIST, null);
+        dbManager.insert(entry, DatabaseHelper.TABLE_NAMELIST, 0);
+        Log.i("maar ik denk", "in deze functie");
         newtodo.setText("");
+        Cursor cursor = dbManager.fetchList(DatabaseHelper._ID + " = (SELECT MAX(" +
+                DatabaseHelper._ID + ")  FROM " + DatabaseHelper.TABLE_NAMELIST + ");");
+        Log.i("kom ik", "hier dan niet?");
+        int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper._ID));
 
-        ListofLists.add(new TodoList(entry));
+        ListofLists.add(new TodoList(entry, id));
 
+        Log.i("zoek zoek", "zoekerdezoek");
         fetchCursor();
 
         todoAdapter.notifyDataSetChanged();
@@ -79,13 +101,17 @@ public class MainActivity extends AppCompatActivity {
         todolist.setOnItemLongClickListener((new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                String toDelete = (todolist.getItemAtPosition(position)).toString();
-                dbManager.delete(id);
-
+                Log.i("hier", "hier");
+                toDelete = ListofLists.get(position);
+                Log.i("of", "hier");
+                toDeleteID = toDelete.getId();
+                Log.i("hier", "of");
+                Button removeButton = (Button) findViewById(R.id.remove);
+                Log.i("eventueel", "hier");
+                removeButton.setVisibility(View.VISIBLE);
+                Log.i("hier", "eventueel");
                 fetchCursor();
-                todoAdapter.notifyDataSetChanged();
-
+                Log.i("tenslotte", "hier");
                 return true;
             }
         }));
@@ -96,8 +122,9 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, ListActivity.class);
                 TodoList clickedList = ListofLists.get(position);
-                intent.putExtra("title", clickedList.getListName());
+                intent.putExtra("id", clickedList.getId());
 
+                Log.i("dit is het laatste", String.valueOf(clickedList.getId()));
                 startActivity(intent);
             }
         }));
@@ -107,5 +134,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnItemClick(AdapterView<?> parent, View view, int position, long id) {
+    }
+
+    public void RemoveFromList(View view) {
+        dbManager.delete(toDeleteID, DatabaseHelper.TABLE_NAMELIST, DatabaseHelper._ID);
+        dbManager.delete(toDeleteID, DatabaseHelper.TABLE_NAMEITEM, DatabaseHelper.PARENT);
+
+        ListofLists.remove(toDelete);
+
+        Button removeButton = (Button) findViewById(R.id.remove);
+        removeButton.setVisibility(View.GONE);
+
+        todoAdapter.notifyDataSetChanged();
     }
 }

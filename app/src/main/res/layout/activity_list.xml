@@ -10,10 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.gebruiker.nathalievansterkenburg_pset5.ListActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/whatlist"
+        android:layout_alignParentTop="true"/>
+
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_alignParentTop="true"
+        android:layout_height="500dp"
+        android:layout_below="@id/whatlist"
+        android:layout_marginTop="10dp"
         android:listSelector="@color/colorAccent"
         android:id="@+id/todolist"
         android:layout_marginBottom="45dp"/>
@@ -24,6 +31,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
         android:inputType="text"
         android:hint="@string/newtodo"
         android:id="@+id/newtodo"/>

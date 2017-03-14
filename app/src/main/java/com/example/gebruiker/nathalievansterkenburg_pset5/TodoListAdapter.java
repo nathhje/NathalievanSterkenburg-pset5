@@ -33,7 +33,7 @@ public class TodoListAdapter extends ArrayAdapter {
 
         if(view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.simple_layout, parent, false);
+            view = inflater.inflate(R.layout.very_simple_layout, parent, false);
         }
 
         TodoList aList = theList.get(pos);

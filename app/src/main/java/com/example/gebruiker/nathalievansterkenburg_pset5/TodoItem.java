@@ -9,12 +9,14 @@ import java.io.Serializable;
 public class TodoItem implements Serializable{
     private String task;
     private String checked;
-    private String parent;
+    private int parent;
+    private int id;
 
-    public TodoItem(String newTask, String theParent) {
+    public TodoItem(String newTask, int theParent, int ID) {
         task = newTask;
         checked = MainActivity.CROSS;
         parent = theParent;
+        id = ID;
     }
 
     public String getTask() {
@@ -25,7 +27,9 @@ public class TodoItem implements Serializable{
         return checked;
     }
 
-    public String getParent() { return parent; }
+    public int getParent() { return parent; }
+
+    public int getId() { return id; }
 
     public void setTask(String newTask) {
         task = newTask;
@@ -33,5 +37,7 @@ public class TodoItem implements Serializable{
 
     public void setChecked(String newChecked) { checked = newChecked; }
 
-    public void setParent(String newParent) { parent = newParent; }
+    public void setParent(int newParent) { parent = newParent; }
+
+    public void setId(int newID) { id = newID; }
 }
